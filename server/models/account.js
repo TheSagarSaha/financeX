@@ -15,6 +15,14 @@ const accountSchema = new Schema ({
     password: {
         type: String,
         required: true
+    },
+    income: {
+        type: Number,
+        required: true
+    },
+    expense: {
+        type: Number,
+        required: true,
     }
 })
 
