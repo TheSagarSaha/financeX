@@ -1,11 +1,15 @@
 import React from "react"
 import { useState } from "react"
+import "bootstrap/dist/css/bootstrap.min.css"
+import "./login.css"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
 
     const [username, setUsername] = useState('')    
     const [password, setPassword] = useState('')
     const [result, setResult] = useState('')
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -18,20 +22,42 @@ const Login = () => {
             },
         })
         const json = await response.json()
-        setResult(json.msg)
+        if(json.msg === "found") {
+            navigate("/profile")
+        } else {
+            setResult("Incorrect Username or Password. Please Try Again")
+        }        
     }
 
     return(
         <div className="login">
             <h1>LoginPage</h1>
+
             <form onSubmit={handleSubmit}>
-                <label>username:</label>
-                <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-                <label>password:</label>
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                <button type="submit">Login</button>
+                <div class="form-row">
+                    <div class="col">
+                        <input 
+                            type="text" 
+                            className="form-control"
+                            placeholder="Username" 
+                            value={username} 
+                            onChange={e => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <div class="col">
+                        <input 
+                            type="password" 
+                            className="form-control" 
+                            placeholder="Password" 
+                            value={password} 
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <button type="submit" className="btn btn-outline-primary">Login</button>
             </form>
-            <p>{result}</p>
+            <br />
+            <h6>{result}</h6>
         </div>
     )
 }

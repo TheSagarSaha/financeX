@@ -1,0 +1,25 @@
+body {
+    text-align: left;
+}
+
+header {
+    background-color: aliceblue;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.navLink {
+    display: inline-block;
+    margin: 15px 10px;
+    font-weight: bold;
+}
+
+.navLink:hover {
+    color:cornflowerblue;
+    text-decoration: underline;
+}
+
+.headerTitle {
+    display: inline-block;
+    margin: 25px 50px;
+}
