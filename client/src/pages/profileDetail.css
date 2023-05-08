@@ -1,0 +1,48 @@
+.incomeBox {
+    background-color: rgb(195, 243, 219);
+    padding: 2% 7%;
+    border-radius: 10px;
+    margin-bottom: 1%;
+}
+
+.expenseBox {
+    background-color: rgb(240, 206, 206);
+    padding: 2% 7%;
+    border-radius: 10px;
+    margin-top: 1%;
+}
+
+.amount {
+    margin-left: 65%;
+    margin-right: 2%;
+}
+
+.profileDetail {
+    margin-top: 5%;
+}
+
+.bi {
+    margin: 0 1% 0 0;
+}
+
+.green {
+    color: darkolivegreen;
+}
+
+.red {
+    color: red;
+}
+
+.green:hover {
+    cursor: pointer;
+}
+
+.red:hover {
+    cursor: pointer;
+}
+
+.add {
+    display: inline;
+    width: 25%;
+    margin: 10px 1% 0 0;
+}

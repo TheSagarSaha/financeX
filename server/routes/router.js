@@ -3,6 +3,8 @@ const router = express.Router()
 const Account = require("../models/account")
 const Income = require("../models/income")
 const Expense = require("../models/expense")
+const account = require("../models/account")
+const date = new Date()
 var accountStatus = false
 var savedUsername = ""
 
@@ -41,7 +43,7 @@ router.get("/incomeTransactions", (req, res) => {
 router.get("/expenseTransactions", (req, res) => {
   if (accountStatus && savedUsername) {
     Expense.find({username: savedUsername}).then((data) => {
-      res.send(JSON.stringify({"username": data[0].username, "income": data[0].income}))
+      res.send(data)
     })
   }
 })
@@ -55,7 +57,8 @@ router.post("/signup", async (req, res) => {
   const { name, email, username, password } = req.body
   const income = req.body.income
   const expense = req.body.expense
-  console.log(income, expense);
+  let currentDate = (date.toISOString()).substring(0,10)
+
   try {
     const accountSignup = await Account.create({
       name, email, username, password,
@@ -71,6 +74,8 @@ router.post("/signup", async (req, res) => {
     const incomeSignup = await Income.create({
       username, 
       income: income,
+      type: "Initial Amount",
+      date: currentDate,
       totalIncome: income
     })
   } catch(error) {
@@ -80,6 +85,8 @@ router.post("/signup", async (req, res) => {
   try {
     const expenseSignup = await Expense.create({
       username,
+      type: "Initial Amount",
+      date: currentDate,
       expense: expense,
       totalExpense: expense
     })
@@ -105,12 +112,80 @@ router.post("/login", (req, res) => {
   })
 })
 
-router.post("/income", (req, res) => {
+router.post("/income", async (req, res) => {
+  
+  let currentDate = (date.toISOString()).substring(0,10)
+  let postingError = false
+  try {
+    const newIncome = await Income.create({
+      username: savedUsername,
+      income: parseInt(req.body.addIncome),
+      type: req.body.addIncomeType,
+      date: currentDate
+    })
+  } catch (err) {
+    console.log("hereafaefae asdf eaf df asfe a");
+    console.log(err);
+    postingError = true
+  }
+
+  try {
+    var income=0
+    await Account.find({username: savedUsername}).then((data) => {
+      income = data[0].income
+    })
+
+    const updated = await Account.findOneAndUpdate(
+      {username: savedUsername},
+      {income: income + parseInt(req.body.addIncome)}
+    )
+  } catch (err) {
+    console.log(err);
+    postingError = true
+  }
+
+  if(!postingError) {
+    res.send({"msg": "success"})
+  } else { res.send("error") }
 
 })
 
-router.post("/expense", (req, res) => {
+
+router.post("/expense", async (req, res) => {
+  let currentDate = (date.toISOString()).substring(0,10)
+  let postingError = false
   
+  try {
+    const newIncome = await Expense.create({
+      username: savedUsername,
+      expense: parseInt(req.body.addExpense),
+      type: req.body.addExpenseType,
+      date: currentDate
+    })
+  } catch (err) {
+    console.log(err);
+    postingError = true
+  }
+
+  var expense=0
+    await Account.find({username: savedUsername}).then((data) => {
+      expense = data[0].expense
+    })
+
+  try {
+    const updated = await Account.findOneAndUpdate(
+      {username: savedUsername},
+      {expense: expense + parseInt(req.body.addExpense)}
+    )
+  } catch (err) {
+    console.log(err);
+    postingError = true
+  }
+
+  if(!postingError) {
+    res.send({"msg": "success"})
+  } else { res.send("error") }
+
 })
 
 module.exports = router;

@@ -4,10 +4,17 @@ const Schema = mongoose.Schema
 const expenseSchema = new Schema ({
     username: {
         type: String,
-        unique: true
     },
     expense: {
         type: Number,
+        required: true,
+    },
+    type: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: String,
         required: true,
     },
     totalExpense: {
