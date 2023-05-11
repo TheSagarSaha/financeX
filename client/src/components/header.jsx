@@ -16,7 +16,7 @@ const Header = () => {
                 </Link><Link to="/profile">
                 <div className="navLink">Profile</div>
                 </Link>
-                <span style={{"margin-left": "40%"}}><strong>@TheSagarSaha</strong></span>
+                <span className="theSagarSaha"><strong>@TheSagarSaha</strong></span>
             </div>
             
         </header>

@@ -23,3 +23,9 @@ header {
     display: inline-block;
     margin: 25px 50px;
 }
+
+.theSagarSaha {
+    position: absolute;
+    top: 30px;
+    left: 75%;
+}

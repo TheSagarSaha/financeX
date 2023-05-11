@@ -88,13 +88,13 @@ const ProfileData = () => {
         }
     }
 
+    const netValue = income-expense;
+
     return(
         <div className="profileDetail">
             <h4>Your Accounts At a Glance:</h4>
             <div className="incomeBox">
-                <h6>Your Net Income: <span className="netAmount"> $ {income} </span> 
-                    <span className="iconSpan green"> <i className="bi bi-arrow-down-square-fill"></i> <i class="bi bi-plus-square-fill"></i> </span>
-                </h6>
+                <h6>Your Total Income: <span className="netAmount"> $ {income} </span> </h6>
                 
                 <div>
                     <hr />
@@ -137,9 +137,7 @@ const ProfileData = () => {
 
             </div>
             <div className="expenseBox">
-                <h6>Your Net Expense: <span className="netAmount"> $ {expense} </span> 
-                    <span className="iconSpan red"> <i className="bi bi-arrow-down-square-fill"></i> <i class="bi bi-plus-square-fill"></i> </span>
-                </h6>
+                <h6>Your Total Expense: <span className="netAmount"> $ {expense} </span> </h6>
                 
                 <div>
                     <hr />
@@ -181,6 +179,17 @@ const ProfileData = () => {
                 </div>
 
             </div>  
+
+            <div className="net">
+                <h3>Your Net Income: ${netValue} </h3>
+            </div>
+            <div className="overall">
+                <h3>Your Overall Net Income Breakdown:</h3> <br />
+                <h4>Expenses: <span className="percentage">50%</span> <span className="bd-value">$ {netValue*0.5}</span> </h4>
+                <h4>Savings: <span className="percentage">20%</span> <span className="bd-value">$ {netValue*0.2}</span> </h4>
+                <h4>Investments: <span className="percentage">20%</span> <span className="bd-value">$ {netValue*0.2}</span> </h4>
+                <h4>Others: <span className="percentage">10%</span> <span className="bd-value">$ {netValue*0.1}</span> </h4>
+            </div>
         </div>
     )
 }

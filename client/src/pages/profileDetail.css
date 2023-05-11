@@ -13,8 +13,8 @@
 }
 
 .netAmount {
-    margin-left: 65%;
-    margin-right: 2%;
+    position: absolute;
+    left: 75%;
 }
 
 .profileDetail {
@@ -61,4 +61,35 @@
 
 .type, .amount, .date {
     margin-bottom: 5px;
+}
+
+.net {
+    padding: 2% 5%;
+    margin: 5% auto;
+    background-color:rgba(126, 248, 248, 0.438);
+    border-radius: 10px;
+    width: 40%;
+    text-align: center;
+
+}
+
+hr {
+    width: 95%;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 10px;
+}
+
+.percentage {
+    position: absolute;
+    left: 50%;
+}
+
+.bd-value {
+    position: absolute;
+    left: 60%;
+}
+
+.overall {
+    margin-left: 27%;
 }
