@@ -31,6 +31,7 @@ const ProfileData = () => {
         const fetchIncomeData = async () => {
             const response = await fetch("/incomeTransactions")
             const json = await response.json()
+            setIncomeData(json)
             console.log(json);
         }
         fetchIncomeData()
@@ -40,6 +41,7 @@ const ProfileData = () => {
         const fetchExpenseData = async () => {
             const response = await fetch("/expenseTransactions")
             const json = await response.json()
+            setExpenseData(json)
             console.log(json);
         }
         fetchExpenseData()
@@ -90,7 +92,7 @@ const ProfileData = () => {
         <div className="profileDetail">
             <h4>Your Accounts At a Glance:</h4>
             <div className="incomeBox">
-                <h6>Your Net Income: <span className="amount"> $ {income} </span> 
+                <h6>Your Net Income: <span className="netAmount"> $ {income} </span> 
                     <span className="iconSpan green"> <i className="bi bi-arrow-down-square-fill"></i> <i class="bi bi-plus-square-fill"></i> </span>
                 </h6>
                 
@@ -112,19 +114,30 @@ const ProfileData = () => {
                             type="text" 
                             placeholder="Enter Transaction Type" 
                         />
-                        <button type="submit" className="btn btn-outline-primary" style={{"marginBottom": "4px"}}>Add Transaction</button>
+                        <button type="submit" className="btn btn-outline-success" style={{"marginBottom": "4px"}}>Add Transaction</button>
                     </form>
                     <p><strong>{incomeResult}</strong></p>
                 </div>
 
-                <div>
+                <div className="transactionsDetailsDiv">
                     <hr />
-                    <h6>View Your Past Transactions Here:</h6>
+                    <h6>View Your Past Transactions Here:</h6> <br />
+                    <label> <strong>  Type: </strong></label>
+                    <label className="transactionsLabel amount"> <strong>  Amount: </strong></label>
+                    <label className="transactionsLabel date"> <strong>  Date: </strong></label>
+                    {incomeData && incomeData.map((currentData) => (
+                        <div key={currentData._id}> 
+                            <label className="transactionsLabel type">{currentData.type}</label>
+                            <label className="transactionsLabel amount">$ {currentData.income}</label>
+                            <label className="transactionsLabel date">{currentData.date} </label> <br />
+                        </div>
+                    ))}
+                    <br />
                 </div>
 
             </div>
             <div className="expenseBox">
-                <h6>Your Net Expense: <span className="amount"> $ {expense} </span> 
+                <h6>Your Net Expense: <span className="netAmount"> $ {expense} </span> 
                     <span className="iconSpan red"> <i className="bi bi-arrow-down-square-fill"></i> <i class="bi bi-plus-square-fill"></i> </span>
                 </h6>
                 
@@ -146,15 +159,26 @@ const ProfileData = () => {
                             type="text" 
                             placeholder="Enter Transaction Type"
                         />
-                        <button className="btn btn-outline-primary" style={{"marginBottom": "4px"}}>Add Transaction</button>
+                        <button className="btn btn-outline-danger" style={{"marginBottom": "4px"}}>Add Transaction</button>
                     </form>
                     <p><strong>{expenseResult}</strong></p>
                 </div>
 
-                <div>
+                <div className="transactionsDetailsDiv">
                     <hr />
-                    <h6>View Your Past Transactions Here:</h6>
-                </div>/
+                    <h6>View Your Past Transactions Here:</h6> <br />
+                    <label> <strong>  Type: </strong></label>
+                    <label className="transactionsLabel amount"> <strong>  Amount: </strong></label>
+                    <label className="transactionsLabel date"> <strong>  Date: </strong></label>
+                    {expenseData && expenseData.map((currentData) => (
+                        <div key={currentData._id}> 
+                            <label className="transactionsLabel type">{currentData.type}</label>
+                            <label className="transactionsLabel amount">$ {currentData.expense}</label>
+                            <label className="transactionsLabel date">{currentData.date} </label> <br />
+                        </div>
+                    ))}
+                    <br />
+                </div>
 
             </div>  
         </div>

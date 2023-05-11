@@ -1,18 +1,18 @@
 .incomeBox {
-    background-color: rgb(195, 243, 219);
+    background-color: rgba(159, 243, 180, 0.425);
     padding: 2% 7%;
     border-radius: 10px;
     margin-bottom: 1%;
 }
 
 .expenseBox {
-    background-color: rgb(240, 206, 206);
+    background-color: rgba(240, 206, 206, 0.514);
     padding: 2% 7%;
     border-radius: 10px;
     margin-top: 1%;
 }
 
-.amount {
+.netAmount {
     margin-left: 65%;
     margin-right: 2%;
 }
@@ -45,4 +45,20 @@
     display: inline;
     width: 25%;
     margin: 10px 1% 0 0;
+}
+
+.transactionsLabel {
+    position: absolute;
+}
+
+.amount {
+    left: 45%;
+}
+
+.date {
+    left: 75%;
+}
+
+.type, .amount, .date {
+    margin-bottom: 5px;
 }
