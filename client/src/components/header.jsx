@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom"
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "./header.css"
 
 const Header = () => {
     return (
         <header>
             <div className="navContainer">
-                <h4 className="headerTitle">FinancifyX</h4>
+                <h4 className="headerTitle">FinancifyX <i class="bi bi-coin"></i></h4>
                 <Link to="/">
                     <div className="navLink">Home</div>
                 </Link>

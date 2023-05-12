@@ -10,6 +10,7 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [result, setResult] = useState('')
     const navigate = useNavigate();
+    const [show, setShow] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -26,12 +27,14 @@ const Login = () => {
             navigate("/profile")
         } else {
             setResult("Incorrect Username or Password. Please Try Again")
+            setShow(true)
         }        
     }
 
     return(
         <div className="login">
-            <h1>LoginPage</h1>
+            <h1>FinancifyX Login</h1>
+            <p>Login here if you have already created an account previously. If you haven't created an account yet, sign up <a href="/signup">here</a>.</p>
 
             <form onSubmit={handleSubmit}>
                 <div class="form-row">
@@ -54,10 +57,10 @@ const Login = () => {
                         />
                     </div>
                 </div>
-                <button type="submit" className="btn btn-outline-primary">Login</button>
+                <button style={{"width":"100px"}} type="submit" className="btn btn-outline-primary">Login <i class="bi bi-box-arrow-in-right"></i> </button>
             </form>
             <br />
-            <h6>{result}</h6>
+            <h6 style={show ? {"color":"red"}:{"display":"none", "color":"red"}}><i class="bi bi-exclamation-octagon"></i>{result}</h6>
         </div>
     )
 }

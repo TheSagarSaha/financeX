@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom"
 const ProfileData = () => {
 
     const navigate = useNavigate();
-    const [data, setData] = useState(null)
     const [income, setIncome] = useState("")
     const [expense, setExpense] = useState("")
     const [incomeData, setIncomeData] = useState(null)
@@ -17,9 +16,7 @@ const ProfileData = () => {
         const fetchData = async () => {
             const response = await fetch("/profile")
             const json = await response.json()
-            console.log(json[0].income);
             if (response.ok) {
-                setData(json[0])
                 setIncome(json[0].income)
                 setExpense(json[0].expense)
             }
@@ -32,7 +29,6 @@ const ProfileData = () => {
             const response = await fetch("/incomeTransactions")
             const json = await response.json()
             setIncomeData(json)
-            console.log(json);
         }
         fetchIncomeData()
     }, []) 
@@ -42,7 +38,6 @@ const ProfileData = () => {
             const response = await fetch("/expenseTransactions")
             const json = await response.json()
             setExpenseData(json)
-            console.log(json);
         }
         fetchExpenseData()
     }, []) 
@@ -89,6 +84,11 @@ const ProfileData = () => {
     }
 
     const netValue = income-expense;
+
+    const onSignOut = () => {
+        fetch("/signout")
+        navigate("/")
+    }
 
     return(
         <div className="profileDetail">
@@ -189,7 +189,16 @@ const ProfileData = () => {
                 <h4>Savings: <span className="percentage">20%</span> <span className="bd-value">$ {netValue*0.2}</span> </h4>
                 <h4>Investments: <span className="percentage">20%</span> <span className="bd-value">$ {netValue*0.2}</span> </h4>
                 <h4>Others: <span className="percentage">10%</span> <span className="bd-value">$ {netValue*0.1}</span> </h4>
+                <br /> <br />
+                <h6 style={{"marginLeft": "20%"}}>
+                    <button 
+                        className="btn btn-outline-danger"
+                        style={{"textDecoration":"none", "width":"25%"}} 
+                        onClick={onSignOut}>Sign Out <i class="bi bi-box-arrow-in-left"></i>
+                    </button>
+                </h6>
             </div>
+            
         </div>
     )
 }

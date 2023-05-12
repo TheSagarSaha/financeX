@@ -22,6 +22,7 @@ header {
 .headerTitle {
     display: inline-block;
     margin: 25px 50px;
+    width: 150px;
 }
 
 .theSagarSaha {

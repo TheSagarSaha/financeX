@@ -34,7 +34,8 @@ const Signup = () => {
 
     return(
         <div className="signup">
-            <h1>Signup Page</h1>
+            <h1>FinancifyX Signup</h1>
+            <p>Sign up here if you don't already have an account. If you already have an account, please sign in <a href="/login">here</a>.</p>
             <br />
             <form onSubmit={handleSubmit}>
                 <div className="form-row ">
@@ -72,7 +73,7 @@ const Signup = () => {
                     </div>
                 </div>
 
-                <button type="submit" style={{"marginLeft": "2%"}} className="btn btn-primary">Sign Up</button>
+                <button type="submit" style={{"marginLeft": "2%", "width": "130px"}} className="btn btn-primary">Sign Up  <i style={{"marginLeft":"5px"}} class="bi bi-person-plus-fill"></i> </button>
             </form>
             <h5>{result}</h5>
         </div>
