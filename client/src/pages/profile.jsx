@@ -7,12 +7,23 @@ const Profile = () => {
     const [show, setShow] = useState(false)
 
     useEffect(() => {
+
+        
         const fetchData = async () => {
-            const response = await fetch("/profile")
-            const json = await response.json()
-            if (response.ok) {
-                setName(json[0].name)
-                setShow(true)
+            const getUser = JSON.parse(localStorage.getItem("user"))
+            console.log(getUser["username"]);
+            const username = getUser["username"]
+            if(username) {
+                const response = await fetch("/profile", {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({username})  
+                })
+                const json = await response.json()
+                if (json.msg !== "null") {
+                    setName(json.msg)
+                    setShow(true)
+                }
             }
         }
         fetchData()

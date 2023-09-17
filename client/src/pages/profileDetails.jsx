@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useLogout } from "../context/useLogout";
 import "./profileDetail.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -84,9 +85,10 @@ const ProfileData = () => {
     }
 
     const netValue = income-expense;
-
+    
+    const {logout} = useLogout()
     const onSignOut = () => {
-        fetch("/signout")
+        logout()
         navigate("/")
     }
 

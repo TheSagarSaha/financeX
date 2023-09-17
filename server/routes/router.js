@@ -1,20 +1,38 @@
 const express = require("express")
 const router = express.Router()
+var bodyParser = require("body-parser")
 const Account = require("../models/account")
 const Income = require("../models/income")
 const Expense = require("../models/expense")
-const date = new Date()
+const requireAuth = require("../middleware/requireAuth")
+// const {useAuthContext} =  require("../../client/src/context/useAuthContext")
+const jwt = require("jsonwebtoken")
+const date = new Date() 
 var accountStatus = false
 var savedUsername = ""
 
-router.get("/profile", (req, res) => {
-  if (accountStatus && savedUsername) {
-    Account.find({username: savedUsername}).then((data) => {
-      res.send(data)
-    })  
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+ 
+const createToken = (_id) => {
+  return jwt.sign({_id}, process.env.SECRET, { expiresIn: '1d' })
+}
+
+// router.use(requireAuth)
+
+router.post("/profile", async (req, res) => { 
+  const {username} = req.body
+  
+  var name = "null"
+  if (username) {
+    Account.find({username}).then((data) => {
+      name = data[0]["first_name"]
+      res.send({"msg": name})
+    })
+    
   } else {
-    res.send({"msg": "signed-out"})
+    res.send({"msg": "not logged in"})
   }
+  
 })
 
 router.get("/incomeTransactions", (req, res) => {
@@ -33,35 +51,34 @@ router.get("/expenseTransactions", (req, res) => {
   }
 })
 
-router.get("/signout", (req, res) => {
-  accountStatus = false
-  savedUsername = ""
-})
-
-router.post("/signup", async (req, res) => {
-  const { name, email, username, password } = req.body
-  const income = req.body.income
-  const expense = req.body.expense
+router.post("/signup", urlencodedParser, async (req, res) => {
+  const { f_name, l_name, email, username, password } = req.body
   let currentDate = (date.toISOString()).substring(0,10)
-
+  console.log(f_name, l_name, email, username, password); 
+  console.log("\n\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n\n")
   try {
-    await Account.create({
-      name, email, username, password,
-      income: income,
-      expense: expense
-    })
-    res.send({"msg": "success"})
+    const user = await Account.signup(
+      f_name, l_name, email, username, password,
+    )
+    console.log(user);
+    if (user["msg"]) {
+      res.status(401).json({"msg": "email/username in use"})
+    } else {
+      const token = createToken(user._id)
+      res.status(200).json({email, token})
+    }
   } catch (error) {
     console.log(error);
-  }
+    res.status(400).json({"msg": "error"})
+  } 
 
   try {
     await Income.create({
       username, 
-      income: income,
-      type: "Initial Amount",
+      income: 0,
+      type: "Acount Creation",
       date: currentDate,
-      totalIncome: income
+      totalIncome: 0
     })
   } catch(error) {
     console.log(error);
@@ -70,10 +87,10 @@ router.post("/signup", async (req, res) => {
   try {
     await Expense.create({
       username,
-      type: "Initial Amount",
+      type: "Account Creation",
       date: currentDate,
-      expense: expense,
-      totalExpense: expense
+      expense: 0,
+      totalExpense: 0
     })
   } catch(err) {
     console.log(err);
@@ -82,18 +99,17 @@ router.post("/signup", async (req, res) => {
   savedUsername = req.body.signup
 })
 
-router.post("/login", (req, res) => {
-   Account.find({username: req.body.username, password: req.body.password}).then((data) => {
-    if (data.length != 0) {
-      res.status(200).json({msg: "found"})
-      accountStatus = true
-      savedUsername = data[0].username
-    } else {
-      res.status(404).json({msg: "not found"})
-      savedUsername = ""
-    }
-    
-  })
+router.post("/login", async (req, res) => {
+   const {username, password} = req.body
+   console.log(username, password);
+   try {
+    const user = await Account.login(username, password)
+    const token = createToken(user._id)
+    res.status(200).json({username, token})
+  } catch (error) {
+    console.log(error)
+    res.status(401).json({error}) 
+  }
 })
 
 router.post("/income", async (req, res) => {
